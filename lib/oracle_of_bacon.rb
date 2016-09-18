@@ -20,13 +20,16 @@ class OracleOfBacon
   validate :from_does_not_equal_to
 
    def from_does_not_equal_to
-#    if @from == @to
-#      self.errors.add(:from, 'cannot be the same as To')
-#    end
-  end
+    if @from == @to
+      self.errors.add(:from, 'cannot be the same as To')
+    end
+   end
 
-  def initialize(api_key='')
+  def initialize(api_key='38b99ce9ec87')
     # your code here
+    @api_key=api_key
+    @to="Kevin Bacon"
+    @from="Kevin Bacon"
   end
 
   def find_connections
@@ -69,13 +72,15 @@ class OracleOfBacon
       elsif ! @doc.xpath('/link').empty?
         parse_graph_response
       else
-        parse_error_response
+        parse_unknown_response
       end
     end
 
     def parse_error_response
      #Your code here.  Assign @type and @data
      # based on type attribute and body of the error element
+     @type = @doc.xpath('/error').attribute('type').text.to_sym
+     @data = @doc.xpath('/error').text
     end
 
     def parse_spellcheck_response
@@ -86,6 +91,8 @@ class OracleOfBacon
 
     def parse_graph_response
       #Your code here
+      @type = :graph
+      @data = @doc.xpath('/link/*').map(&:text)
     end
 
     def parse_unknown_response
