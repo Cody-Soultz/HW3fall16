@@ -1,7 +1,7 @@
 source 'https://rubygems.org'
 
 ruby '2.3.0'
-gem 'spec-autotest'
+gem 'rspec-autotest'
 gem 'autotest-standalone'
 gem 'nokogiri'
 #gem 'byebug'
